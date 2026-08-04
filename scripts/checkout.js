@@ -25,6 +25,8 @@ cart.forEach((cartItem) => {
     }
   });
 
+  const deliveryOptionId = cartItem.deliveryOptionId;
+
   cartSummaryHTML += `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
     <div class="delivery-date">
@@ -40,7 +42,7 @@ cart.forEach((cartItem) => {
           ${matchingProduct.name}
         </div>
         <div class="product-price">
-          $${(matchingProduct.priceCents / 100).toFixed(2)}
+          $${formatCurrency(matchingProduct.price)}
         </div>
         <div class="product-quantity">
           <span>
