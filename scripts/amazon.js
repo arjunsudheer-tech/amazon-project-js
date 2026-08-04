@@ -70,6 +70,8 @@ products.forEach((product) => {
       .innerHTML = cartQuantity;
   }
 
+  updateCartQuantity();
+
   function showAddedMessage(productId) {
     const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
     addedMessage.classList.add('added-to-cart-visible');
