@@ -70,6 +70,8 @@ function updateCartQuantity() {
   document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 }
 
+updateCartQuantity();
+
 function addedMessage(productId) {
 
   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
@@ -97,6 +99,3 @@ document.querySelectorAll('.js-add-to-cart')
       addedMessage(productId); 
     });
   });
-
-
-  console.log();
