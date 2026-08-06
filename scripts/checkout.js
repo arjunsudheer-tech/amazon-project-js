@@ -3,15 +3,9 @@ import {products} from '../data/products.js';
 import {formatCurrency} from './utils/money.js';
 import { hello } from 'https://unpkg.com/supersimpledev@1.0.1/hello.esm.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOption } from '../data/deliveryOption.js';
+import { deliveryOptions } from '../data/deliveryOptions.js';
 
 let cartSummaryHTML = '';
-
-hello();
-
-const today = dayjs();
-const deliveryDate = today.add(7 , 'days');
-console.log(deliveryDate.format('dddd, MMMM D'));
 
 cart.forEach((cartItem) => {
 
@@ -27,10 +21,24 @@ cart.forEach((cartItem) => {
 
   const deliveryOptionId = cartItem.deliveryOptionId;
 
+  let deliveryOption;
+
+  deliveryOptions.forEach((option) => {
+    if(option.id === deliveryOptionId) {
+      deliveryOption = option;
+    }
+  });
+
+  const today = dayjs();
+  const deliveryDate = today.add(deliveryOption.deliveryDays , 'days');
+  const dateString = deliveryDate.format('dddd, MMMM D');
+
+  const priceString = (deliveryOption.priceCents === 0) ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} -`;
+
   cartSummaryHTML += `
   <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
     <div class="delivery-date">
-      Delivery date: Wednesday, June 15
+      Delivery date: ${dateString}
     </div>
 
     <div class="cart-item-details-grid">
@@ -42,7 +50,7 @@ cart.forEach((cartItem) => {
           ${matchingProduct.name}
         </div>
         <div class="product-price">
-          $${formatCurrency(matchingProduct.price)}
+          $${formatCurrency(matchingProduct.priceCents)}
         </div>
         <div class="product-quantity">
           <span>
@@ -61,7 +69,6 @@ cart.forEach((cartItem) => {
         <div class="delivery-options-title">
           Choose a delivery option:
         </div>
-
         ${deliveryOptionsHTML(matchingProduct , cartItem)}
       </div>
     </div>
@@ -73,7 +80,7 @@ function deliveryOptionsHTML(matchingProduct , cartItem) {
 
   let html = '';
 
-  deliveryOption.forEach((deliveryOption) => {
+  deliveryOptions.forEach((deliveryOption) => {
 
     const today = dayjs();
     const deliveryDate = today.add(deliveryOption.deliveryDays , 'days');
